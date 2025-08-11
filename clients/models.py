@@ -16,7 +16,7 @@ class Client(models.Model):
 class Payment(models.Model):
     id = models.UUIDField(primary_key=True)
     rental_id = models.UUIDField()
-    client_id = models.ForeignKey('Client', on_delete=models.CASCADE)
+    client_id = models.ForeignKey('Client', on_delete=models.CASCADE, db_column='client_id')
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     type = models.CharField(max_length=50)
     method = models.CharField(max_length=50)

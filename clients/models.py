@@ -1,22 +1,25 @@
 from django.db import models
-
+import uuid
 
 class Client(models.Model):
-    name = models.CharField(max_length=100, verbose_name='Имя')
-    email = models.EmailField(verbose_name='Email')
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.TextField()
+    created_at = models.DateTimeField(null=True, blank=True)
+    phone = models.TextField(null=True, blank=True)
+    note = models.TextField(null=True, blank=True)
 
     class Meta:
+        db_table = 'clients'
         verbose_name = 'клиент'
         verbose_name_plural = 'список клиентов'
 
     def __str__(self):
         return self.name
 
-
 class Payment(models.Model):
     id = models.UUIDField(primary_key=True)
     rental_id = models.UUIDField()
-    client_id = models.ForeignKey('Client', on_delete=models.CASCADE, db_column='client_id')
+    client_id = models.ForeignKey(Client, on_delete=models.CASCADE, db_column='client_id')
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     type = models.CharField(max_length=50)
     method = models.CharField(max_length=50)
@@ -25,10 +28,7 @@ class Payment(models.Model):
 
     class Meta:
         db_table = 'payments'
-        verbose_name = 'платеж'
-        verbose_name_plural = 'платежи'
-        managed = False  # Не управлять таблицей, она уже существует в базе
-
+        managed = False
 
     def __str__(self):
-        return f"Платеж {self.id} - {self.amount}"
+        return f"Payment {self.id} - Client: {self.client_id.name}"

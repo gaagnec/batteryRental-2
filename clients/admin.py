@@ -9,4 +9,4 @@ class ClientAdmin(admin.ModelAdmin):
 
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user_id', 'client_id', 'amount', 'payment_type', 'payment_method', 'payment_date', 'description')
+    list_display = ('id', 'rental_id', 'client_id', 'amount', 'type', 'method', 'paid_at', 'note')

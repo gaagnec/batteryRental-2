@@ -16,7 +16,7 @@ class Client(models.Model):
 class Payment(models.Model):
     id = models.UUIDField(primary_key=True)
     rental_id = models.UUIDField()
-    client_id = models.UUIDField()
+    client_id = models.ForeignKey('Client', on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     type = models.CharField(max_length=50)
     method = models.CharField(max_length=50)
@@ -27,6 +27,8 @@ class Payment(models.Model):
         db_table = 'payments'
         verbose_name = 'платеж'
         verbose_name_plural = 'платежи'
+        managed = False  # Не управлять таблицей, она уже существует в базе
+
 
     def __str__(self):
         return f"Платеж {self.id} - {self.amount}"
